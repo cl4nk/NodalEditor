@@ -58,6 +58,10 @@ public class Port : IDrawable, IRestorable, IResetable, ICreatable<Port>, IDelet
         public virtual Type PortType { get { return typeof(Port); } }
 
         private string m_name;
+        public string Name
+        {
+            get { return m_name; }
+        }
         private PortTranslation m_translation;
         private int m_group;
 
