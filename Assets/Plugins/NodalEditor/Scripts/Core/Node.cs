@@ -6,19 +6,28 @@ using Interfaces;
 public class Node : IDrawable
 {
     private Rect m_rect = new Rect();
-    private string m_title = "No Title";
     private bool m_isDragged = false;
     private GUIStyle m_style = new GUIStyle();
-    private int m_id = -1;
-    private List<Port> m_ports = new List<Port>();
-    private List<int> m_modGroup = new List<int>();
+    private NodeData m_data = new NodeData();
 
-    public Node(Vector2 position, int id)
+    public static Node Create(Vector2 position, int id)
+    {
+        Node node = new Node(position);
+        node.m_data = ScriptableObject.CreateInstance<NodeData>();
+        node.m_data.ID = id;
+        node.m_data.Position = position;
+        node.m_data.PortDatas = new List<PortData>();
+        node.m_data.Name = "No Title";
+        node.m_data.ModulableInGroupPorts = new List<int>();
+        node.m_data.ModulableOutGroupPorts = new List<int>();
+        return node;
+    }
+
+    public Node(Vector2 position)
     {
         m_rect = new Rect(position.x, position.y, 100, 100);
         m_style.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1.png") as Texture2D;
         m_style.border = new RectOffset(12, 12, 12, 12);
-        m_id = id;
     }
 
     public void Drag(Vector2 delta)
@@ -30,7 +39,7 @@ public class Node : IDrawable
     {
         GUI.Box(m_rect, "", m_style);
         GUI.BeginGroup(m_rect);
-        GUILayout.Label(m_title);
+        GUILayout.Label(m_data.Name);
         GUI.EndGroup();
     }
 

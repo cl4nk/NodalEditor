@@ -4,8 +4,9 @@ using System.Collections.Generic;
 
 public class NodeBasedWindow : EditorWindow
 {
-    private List<Node> m_nodes = new List<Node>();
+    //private List<Node> m_nodes = new List<Node>();
     private GUIStyle m_nodeStyle;
+    private Graph m_graph = new Graph();
 
     [MenuItem("Window/Window Editor")]
     private static void OpenWindow()
@@ -16,26 +17,14 @@ public class NodeBasedWindow : EditorWindow
 
     private void OnGUI()
     {
-        DrawNodes();
+        m_graph.Draw();
 
-        ProcessNodeEvents(Event.current);
+        m_graph.Process();
         ProcessEvents(Event.current);
 
         if (GUI.changed)
         {
             Repaint();
-        }
-    }
-
-    private void DrawNodes()
-    {
-        if ( m_nodes != null )
-        {
-            int size = m_nodes.Count;
-            for ( int idx = 0; idx < size; ++idx )
-            {
-                m_nodes[idx].Draw();
-            }
         }
     }
 
@@ -52,36 +41,10 @@ public class NodeBasedWindow : EditorWindow
         }
     }
 
-    private void ProcessNodeEvents(Event e)
-    {
-        if (m_nodes != null)
-        {
-            for (int i = m_nodes.Count - 1; i >= 0; i--)
-            {
-                bool guiChanged = m_nodes[i].ProcessEvents(e);
-
-                if (guiChanged)
-                {
-                    GUI.changed = true;
-                }
-            }
-        }
-    }
-
     private void ProcessContextMenu(Vector2 mousePosition)
     {
         GenericMenu genericMenu = new GenericMenu();
-        genericMenu.AddItem( new GUIContent("Add node"), false, () => OnClickAddNode(mousePosition) );
+        genericMenu.AddItem( new GUIContent("Add node"), false, () => m_graph.AddNode(mousePosition) );
         genericMenu.ShowAsContext();
-    }
-
-    private void OnClickAddNode(Vector2 mousePosition)
-    {
-        if ( m_nodes == null )
-        {
-            m_nodes = new List<Node>();
-        }
-
-        m_nodes.Add( new Node( mousePosition, m_nodes.Count ) );
     }
 }
