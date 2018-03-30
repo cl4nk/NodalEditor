@@ -17,6 +17,7 @@ namespace Interfaces
     {
         T Data { get; }
         Type DataType { get; }
+        //TODO: Maybe use T instead of object
         void Fill(object dataObject);
     }
 
