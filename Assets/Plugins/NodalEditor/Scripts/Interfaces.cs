@@ -27,8 +27,8 @@ namespace Interfaces
         bool Delete();
     }
 
-    public interface ICreatable
+    public interface ICreatable<T>
     {
-        bool Create();
+        T Create();
     }
 }

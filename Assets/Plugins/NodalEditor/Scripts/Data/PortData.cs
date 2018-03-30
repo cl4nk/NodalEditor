@@ -14,4 +14,6 @@ public class PortData : ScriptableObject
     public int NodeID;
     public PortTranslation Translation;
     public int Group;
+
+    public int ConnectedPortID;
 }
