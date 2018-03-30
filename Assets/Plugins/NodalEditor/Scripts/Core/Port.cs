@@ -2,13 +2,13 @@
 using Interfaces;
 using UnityEngine;
 
-public class Port : ScriptableObject, IDrawable, IResetable, IDeletable, IInitializable, INameable, IColorable
+public class Port : ScriptableObject, IDrawable, IResetable, IRestorable<PortData>, IDeletable, INameable, IColorable
 {
     public static Rect PortRect = new Rect(0, 0, 100, 100);
 
     public GUIStyle style;
 
-    private PortData data;
+    public PortData Data { get; private set; }
     
     public string Title
     {
@@ -26,6 +26,37 @@ public class Port : ScriptableObject, IDrawable, IResetable, IDeletable, IInitia
         }
     }
 
+    // DataType must hinerit from @PortData
+    public virtual Type DataType
+    {
+        get { return typeof(PortData); }
+    }
+
+    // type must hinerit from @Port
+    public static Port Create(Type type)
+    {
+        //TODO: throw exception
+        if (type.IsAssignableFrom(typeof(Port)))
+        {
+            Port Port = ScriptableObject.CreateInstance(type) as Port;
+            Port.Data = ScriptableObject.CreateInstance(Port.DataType) as PortData;
+            Port.Data.ClassName = type.FullName;
+            return Port;
+        }
+
+        return null;
+    }
+
+    public static Port Restore(object dataObject)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Fill(object dataObject)
+    {
+        throw new NotImplementedException();
+    }
+
     public void Draw()
     {
         GUI.Button(PortRect, "", style);
@@ -33,7 +64,7 @@ public class Port : ScriptableObject, IDrawable, IResetable, IDeletable, IInitia
 
     public void Reset()
     {
-        data.ConnectedPortID = -1;
+        Data.ConnectedPortID = -1;
     }
 
     public bool Delete()
@@ -44,8 +75,6 @@ public class Port : ScriptableObject, IDrawable, IResetable, IDeletable, IInitia
     [AttributeUsage(AttributeTargets.Class)]
     public class PortAttribute : Attribute
     {
-        public Type ValueType;
-
         public virtual Type PortType { get { return typeof(Port); } }
 
         private string m_name;
@@ -65,22 +94,13 @@ public class Port : ScriptableObject, IDrawable, IResetable, IDeletable, IInitia
 
         public virtual bool IsCompatibleWith(Port port)
         {
-            return port.data.Translation != m_translation;
+            return port.Data.Translation != m_translation;
         }
 
-        public virtual Port CreateNew(Node body)
+        public Port CreateNew(Node body)
         {
-            Port port = ScriptableObject.CreateInstance(PortType) as Port;
-            //TODO: link node
-            port.data.Translation = m_translation;
-            port.data.Group = m_group;
-            return port;
+            return Port.Create(PortType);
         }
-    }
-
-    public void Init()
-    {
-        throw new NotImplementedException();
     }
 
 }

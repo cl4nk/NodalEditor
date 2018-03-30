@@ -5,5 +5,7 @@ using UnityEngine;
 [Serializable]
 public class GraphData : ScriptableObject
 {
-    public List<NodeData> Nodes;
+    public string ClassName; // To use reflection, keep class name
+
+    public List<NodeData> Nodes = new List<NodeData>();
 }

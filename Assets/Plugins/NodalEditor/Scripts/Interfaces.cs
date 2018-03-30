@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Interfaces
 {
@@ -10,6 +11,13 @@ namespace Interfaces
     public interface ISaveable
     {
         bool Save(string path);
+    }
+
+    public interface IRestorable<T>
+    {
+        T Data { get; }
+        Type DataType { get; }
+        void Fill(object dataObject);
     }
 
     public interface IResetable

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class NodeData
+public class NodeData : ScriptableObject
 {
     public string ClassName; // To use reflection, keep class name
 

@@ -1,26 +1,51 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Interfaces;
 using UnityEngine;
 
-public class Graph : IDrawable, ISaveable, IInitializable
+public class Graph : ScriptableObject, IDrawable, ISaveable, IInitializable, IRestorable<GraphData>
 {
-    private GraphData m_data;
     private List<Node> m_nodes = new List<Node>();
 
-    public static Graph Create(Vector2 position, int id)
+    public GraphData Data { get; private set; }
+
+    // DataType must hinerit from @GraphData
+    public virtual Type DataType
     {
-        Graph graph = new Graph();
-        graph.m_data = ScriptableObject.CreateInstance<GraphData>();
-        graph.m_data.Nodes = new List<NodeData>();
-        return graph;
+        get { return typeof(GraphData); }
+    }
+
+    // type must hinerit from @Graph
+    public static Graph Create(Type type)
+    {
+        //TODO: throw exception
+        if (type.IsAssignableFrom(typeof(Graph)))
+        {
+            Graph graph = ScriptableObject.CreateInstance(type) as Graph;
+            graph.Data = ScriptableObject.CreateInstance(graph.DataType) as GraphData;
+            graph.Data.ClassName = type.FullName;
+            return graph;
+        }
+
+        return null;
+    }
+
+    public static Graph Restore(object dataObject)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Fill(object dataObject)
+    {
+        throw new NotImplementedException();
     }
 
     public void Draw()
     {
         int size = m_nodes.Count;
-        for (int idx = 0; idx < size; ++idx)
+        foreach (Node node in m_nodes)
         {
-            m_nodes[idx].Draw();
+            node.Draw();
         }
     }
 
@@ -33,9 +58,9 @@ public class Graph : IDrawable, ISaveable, IInitializable
     {
         if (m_nodes != null)
         {
-            for (int i = m_nodes.Count - 1; i >= 0; i--)
+            foreach (Node node in m_nodes)
             {
-                bool guiChanged = m_nodes[i].ProcessEvents(e);
+                bool guiChanged = node.ProcessEvents(e);
 
                 if (guiChanged)
                 {
@@ -52,19 +77,9 @@ public class Graph : IDrawable, ISaveable, IInitializable
             m_nodes = new List<Node>();
         }
 
-        m_nodes.Add(Node.Create(typeof(Node), mousePosition, this));
-    }
-
-    public bool Restore(ScriptableObject scriptable)
-    {
-        if (scriptable is GraphData)
-        {
-            m_data = scriptable as GraphData;
-            Init();
-            return true;
-        }
-
-        return false;
+        Node createdNode = Node.Create(typeof(Node));
+        createdNode.Init(mousePosition, this);
+        m_nodes.Add(createdNode);
     }
 
     public bool Save(string path)
@@ -76,4 +91,6 @@ public class Graph : IDrawable, ISaveable, IInitializable
     {
         m_nodes.Clear();
     }
+
+    
 }

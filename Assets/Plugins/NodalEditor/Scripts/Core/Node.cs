@@ -5,13 +5,15 @@ using System.Collections.Generic;
 using Interfaces;
 
 //TODO: abstract it when finished
-public class Node : ScriptableObject, IDrawable, INameable, IColorable
+public class Node : ScriptableObject, IDrawable, INameable, IColorable, IRestorable<NodeData>
 {
-    private List<int> ModulableGroupPorts = new List<int>();
+    private static int GlobalID = 0;
+
     private Rect m_rect = new Rect();
     private bool m_isDragged = false;
     private GUIStyle m_style = new GUIStyle();
-    private NodeData m_data = new NodeData();
+
+    public NodeData Data { get; private set; }
 
     //TODO: remove it when the class is finished and abstract
     public virtual string Title
@@ -30,27 +32,52 @@ public class Node : ScriptableObject, IDrawable, INameable, IColorable
         }
     }
 
-    private static int GlobalID = 0;
-
-    public static Node Create(Type type, Vector2 position, Graph ownerGraph)
+    public virtual int[] ModulableGroupPorts
     {
-        Node node = ScriptableObject.CreateInstance(type) as Node;
-        node.m_data.ClassName = type.FullName;
-        node.Init(position, ownerGraph);
-        return node;
+        get { return new[] {0}; }
     }
 
-    public static Node Create(string ClassName, Vector2 position, Graph ownerGraph)
+    // DataType must hinerit from @NodeData
+    public virtual Type DataType
     {
-        NodeTypeData data = NodeTypes.getNodeData(ClassName);
-        return Create(data.type, position, ownerGraph);
+        get { return typeof(NodeData); }
+    }
+
+    public static Node Create(string className)
+    {
+        NodeTypeData data = NodeTypes.getNodeData(className);
+        return Create(data.type);
+    }
+
+    // type must hinerit from @Node
+    public static Node Create(Type type)
+    {
+        //TODO: throw exception
+        if (type.IsAssignableFrom(typeof(Node)))
+        {
+            Node node = ScriptableObject.CreateInstance(type) as Node;
+            node.Data = ScriptableObject.CreateInstance(node.DataType) as NodeData;
+            node.Data.ClassName = type.FullName;
+            return node;
+        }
+
+        return null;
+    }
+
+    public static Node Restore(object dataObject)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Fill(object dataObject)
+    {
+        throw new NotImplementedException();
     }
 
     public void Init(Vector2 position, Graph ownerGraph)
     {
-        m_data.ID = GlobalID++;
-        m_data.Position = position;
-        m_data.PortDatas = new List<PortData>();
+        Data.ID = GlobalID++;
+        Data.Position = position;
 
         m_rect = new Rect(position.x, position.y, 100, 100);
         m_style.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1.png") as Texture2D;
@@ -69,7 +96,6 @@ public class Node : ScriptableObject, IDrawable, INameable, IColorable
         GUILayout.Label(Title);
         GUI.EndGroup();
     }
-
 
     public bool ProcessEvents(Event e)
     {

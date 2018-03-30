@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 public enum PortTranslation
 {
@@ -6,7 +7,7 @@ public enum PortTranslation
 }
 
 [Serializable]
-public class PortData
+public class PortData : ScriptableObject
 {
     public string ClassName;
     public int ID;
