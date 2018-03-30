@@ -9,7 +9,7 @@ namespace Interfaces
 
     public interface ISaveable
     {
-        bool Save();
+        bool Save(string path);
     }
 
     public interface IRestorable
