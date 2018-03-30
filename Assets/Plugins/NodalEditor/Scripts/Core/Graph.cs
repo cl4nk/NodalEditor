@@ -35,8 +35,9 @@ public class Graph : IDrawable, ISaveable, IRestorable, IInitializable
 
     public void Init()
     {
-        foreach (Node node in Nodes)
-        {
-        }
+        Nodes.Clear();
+
+
+
     }
 }
