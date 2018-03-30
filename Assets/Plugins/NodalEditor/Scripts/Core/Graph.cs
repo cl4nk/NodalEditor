@@ -2,7 +2,7 @@
 using Interfaces;
 using UnityEngine;
 
-public class Graph : IDrawable, ISaveable, IRestorable
+public class Graph : IDrawable, ISaveable, IRestorable, IInitializable
 {
     private GraphData m_data;
     private List<Node> m_nodes = new List<Node>();
@@ -57,11 +57,23 @@ public class Graph : IDrawable, ISaveable, IRestorable
 
     public bool Restore(ScriptableObject scriptable)
     {
-        throw new System.NotImplementedException();
+        if (scriptable is GraphData)
+        {
+            m_data = scriptable as GraphData;
+            Init();
+            return true;
+        }
+
+        return false;
     }
 
     public bool Save(string path)
     {
         throw new System.NotImplementedException();
+    }
+
+    public void Init()
+    {
+        m_nodes.Clear();
     }
 }
