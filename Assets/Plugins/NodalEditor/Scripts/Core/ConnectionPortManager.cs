@@ -84,7 +84,7 @@ public static class PortManager
 	{
 		List<Port> declaredPorts = new List<Port> ();
 		PortDeclaration[] portDecls;
-		if (nodePortDeclarations.TryGetValue (node.data.ClassName, out portDecls))
+		if (nodePortDeclarations.TryGetValue (node.GetType().FullName, out portDecls))
 		{
 			foreach (PortDeclaration portDecl in portDecls)
 			{ // Iterate over each connection port and yield it's declaration

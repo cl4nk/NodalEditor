@@ -2,7 +2,7 @@
 using Interfaces;
 using UnityEngine;
 
-public class Graph : IDrawable, ISaveable, IRestorable, IInitializable
+public class Graph : IDrawable, ISaveable, IInitializable
 {
     private GraphData m_data;
     private List<Node> m_nodes = new List<Node>();

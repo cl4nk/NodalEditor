@@ -33,8 +33,7 @@ public class Node : ScriptableObject, IDrawable
         m_data.Position = position;
         m_data.PortDatas = new List<PortData>();
         m_data.Name = "No Title";
-        m_data.ModulableInGroupPorts = new List<int>();
-        m_data.ModulableOutGroupPorts = new List<int>();
+        m_data.ModulableGroupPorts = new List<int>();
 
         m_rect = new Rect(position.x, position.y, 100, 100);
         m_style.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1.png") as Texture2D;

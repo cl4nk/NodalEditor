@@ -12,11 +12,6 @@ namespace Interfaces
         bool Save(string path);
     }
 
-    public interface IRestorable
-    {
-        bool Restore(ScriptableObject scriptable);
-    }
-
     public interface IResetable
     {
         void Reset();
@@ -36,4 +31,15 @@ namespace Interfaces
     {
         void Init();
     }
+
+    public interface IColorable
+    {
+        Color Color { get; }
+    }
+
+    public interface INameable
+    {
+        string Title { get; }
+    }
+
 }
