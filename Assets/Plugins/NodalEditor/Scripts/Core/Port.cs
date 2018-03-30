@@ -2,7 +2,7 @@
 using Interfaces;
 using UnityEngine;
 
-public class Port : ScriptableObject, IDrawable, IResetable, IDeletable, IInitializable
+public class Port : ScriptableObject, IDrawable, IResetable, IDeletable, IInitializable, INameable, IColorable
 {
     public static Rect PortRect = new Rect(0, 0, 100, 100);
 
@@ -10,16 +10,15 @@ public class Port : ScriptableObject, IDrawable, IResetable, IDeletable, IInitia
 
     private PortData data;
     
-    private string m_title; //TODO: Check if we need this
     public string Title
     {
         get
         {
-            return m_title;
+            return "Port";
         }
     }
 
-    public virtual Color BackgroundColor
+    public virtual Color CustomColor
     {
         get
         {
@@ -73,7 +72,6 @@ public class Port : ScriptableObject, IDrawable, IResetable, IDeletable, IInitia
         {
             Port port = ScriptableObject.CreateInstance(PortType) as Port;
             //TODO: link node
-            port.m_title = m_name;
             port.data.Translation = m_translation;
             port.data.Group = m_group;
             return port;
@@ -84,4 +82,5 @@ public class Port : ScriptableObject, IDrawable, IResetable, IDeletable, IInitia
     {
         throw new NotImplementedException();
     }
+
 }

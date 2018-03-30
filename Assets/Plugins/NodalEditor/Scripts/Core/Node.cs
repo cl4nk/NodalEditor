@@ -4,19 +4,29 @@ using UnityEditor;
 using System.Collections.Generic;
 using Interfaces;
 
-public class Node : ScriptableObject, IDrawable
+//TODO: abstract it when finished
+public class Node : ScriptableObject, IDrawable, INameable, IColorable
 {
     private List<int> ModulableGroupPorts = new List<int>();
     private Rect m_rect = new Rect();
     private bool m_isDragged = false;
     private GUIStyle m_style = new GUIStyle();
     private NodeData m_data = new NodeData();
-    private string m_title = "No Title";
-    public string Title
+
+    //TODO: remove it when the class is finished and abstract
+    public virtual string Title
     {
         get
         {
-            return m_title;
+            return "Node";
+        }
+    }
+
+    public virtual Color CustomColor
+    {
+        get
+        {
+            return Color.blue;
         }
     }
 
@@ -56,7 +66,7 @@ public class Node : ScriptableObject, IDrawable
     {
         GUI.Box(m_rect, "", m_style);
         GUI.BeginGroup(m_rect);
-        GUILayout.Label(m_title);
+        GUILayout.Label(Title);
         GUI.EndGroup();
     }
 

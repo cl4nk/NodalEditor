@@ -34,7 +34,7 @@ namespace Interfaces
 
     public interface IColorable
     {
-        Color Color { get; }
+        Color CustomColor { get; }
     }
 
     public interface INameable
