@@ -1,7 +1,8 @@
-﻿using Interfaces;
+﻿using System;
+using Interfaces;
 using UnityEngine;
 
-public class Port : IDrawable, IRestorable, IResetable, ICreatable<Port>, IDeletable
+public class Port : IDrawable, IRestorable, IResetable, ICreatable<Port>, IDeletable, IInitializable
 {
     public static Rect PortRect = new Rect(0, 0, 100, 100);
 
@@ -37,7 +38,7 @@ public class Port : IDrawable, IRestorable, IResetable, ICreatable<Port>, IDelet
         data.ConnectedPortID = -1;
     }
 
-    public Port Create()
+    public virtual Port Create()
     {
         Port port = new Port();
         port.data = ScriptableObject.CreateInstance<PortData>();
@@ -47,5 +48,45 @@ public class Port : IDrawable, IRestorable, IResetable, ICreatable<Port>, IDelet
     public bool Delete()
     {
         throw new System.NotImplementedException();
+    }
+
+    [AttributeUsage(AttributeTargets.Class)]
+    public class PortAttribute : Attribute
+    {
+        public Type ValueType;
+
+        public virtual Type PortType { get { return typeof(Port); } }
+
+        private string m_name;
+        private PortTranslation m_translation;
+        private int m_group;
+
+        public PortAttribute(string Name, PortTranslation Translation, int Group)
+        {
+            m_name = Name;
+            m_translation = Translation;
+            m_group = Group;
+        }
+
+        public virtual bool IsCompatibleWith(Port port)
+        {
+            return port.data.Translation != m_translation;
+        }
+
+        public virtual Port CreateNew(Node body)
+        {
+            Port port = new Port();
+            port.Create();
+            //TODO: link node
+            port.data.Name = m_name;
+            port.data.Translation = m_translation;
+            port.data.Group = m_group;
+            return port;
+        }
+    }
+
+    public void Init()
+    {
+        throw new NotImplementedException();
     }
 }

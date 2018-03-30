@@ -31,4 +31,9 @@ namespace Interfaces
     {
         T Create();
     }
+
+    public interface IInitializable
+    {
+        void Init();
+    }
 }
