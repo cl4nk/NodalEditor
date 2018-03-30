@@ -1,4 +1,6 @@
-﻿namespace Interfaces
+﻿using UnityEngine;
+
+namespace Interfaces
 {
     public interface IDrawable
     {
@@ -12,7 +14,7 @@
 
     public interface IRestorable
     {
-        bool Restore();
+        bool Restore(ScriptableObject scriptable);
     }
 
     public interface IResetable
