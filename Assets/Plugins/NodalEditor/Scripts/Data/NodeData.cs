@@ -5,7 +5,7 @@ using UnityEngine;
 [Serializable]
 public class NodeData
 {
-    //TODO: Add class name
+    public string ClassName;
 
     public int ID;
     public string Name;

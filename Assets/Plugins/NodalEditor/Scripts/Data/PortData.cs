@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 
 public enum PortTranslation
 {
@@ -9,7 +8,7 @@ public enum PortTranslation
 [Serializable]
 public class PortData
 {
-    //TODO: Add class name
+    public string ClassName;
     public int ID;
     public string Name; 
     public int NodeID;
