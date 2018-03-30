@@ -1,4 +1,6 @@
-﻿namespace Interfaces
+﻿using UnityEngine;
+
+namespace Interfaces
 {
     public interface IDrawable
     {
@@ -7,12 +9,12 @@
 
     public interface ISaveable
     {
-        bool Save();
+        bool Save(string path);
     }
 
     public interface IRestorable
     {
-        bool Restore();
+        bool Restore(ScriptableObject scriptable);
     }
 
     public interface IResetable
@@ -25,8 +27,13 @@
         bool Delete();
     }
 
-    public interface ICreatable
+    public interface ICreatable<T>
     {
-        bool Create();
+        T Create();
+    }
+
+    public interface IInitializable
+    {
+        void Init();
     }
 }

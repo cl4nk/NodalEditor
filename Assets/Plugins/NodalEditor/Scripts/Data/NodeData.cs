@@ -1,16 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using Boo.Lang;
 using UnityEngine;
 
-public class NodeData : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+[Serializable]
+public class NodeData : ScriptableObject
+{
+    public int ID;
+    public string Name;
+    public Vector2 Position;
+    public List<PortData> PortDatas;
+    public List<int> ModulableInGroupPorts;
+    public List<int> ModulableOutGroupPorts;
 }

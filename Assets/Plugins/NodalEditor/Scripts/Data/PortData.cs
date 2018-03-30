@@ -1,16 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
-public class PortData : MonoBehaviour {
+public enum PortTranslation
+{
+    In, Out
+}
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+[Serializable]
+public class PortData : ScriptableObject
+{
+    public int ID;
+    public string Name; 
+    public int NodeID;
+    public PortTranslation Translation;
+    public int Group;
+
+    public int ConnectedPortID;
 }
