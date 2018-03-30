@@ -6,10 +6,19 @@ using Interfaces;
 
 public class Node : ScriptableObject, IDrawable
 {
+    private List<int> ModulableGroupPorts = new List<int>();
     private Rect m_rect = new Rect();
     private bool m_isDragged = false;
     private GUIStyle m_style = new GUIStyle();
     private NodeData m_data = new NodeData();
+    private string m_title = "No Title";
+    public string Title
+    {
+        get
+        {
+            return m_title;
+        }
+    }
 
     private static int GlobalID = 0;
 
@@ -32,8 +41,6 @@ public class Node : ScriptableObject, IDrawable
         m_data.ID = GlobalID++;
         m_data.Position = position;
         m_data.PortDatas = new List<PortData>();
-        m_data.Name = "No Title";
-        m_data.ModulableGroupPorts = new List<int>();
 
         m_rect = new Rect(position.x, position.y, 100, 100);
         m_style.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1.png") as Texture2D;
@@ -49,7 +56,7 @@ public class Node : ScriptableObject, IDrawable
     {
         GUI.Box(m_rect, "", m_style);
         GUI.BeginGroup(m_rect);
-        GUILayout.Label(m_data.Name);
+        GUILayout.Label(m_title);
         GUI.EndGroup();
     }
 
