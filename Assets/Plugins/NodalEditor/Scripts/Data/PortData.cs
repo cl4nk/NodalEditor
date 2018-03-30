@@ -10,8 +10,7 @@ public class PortData
 {
     public string ClassName;
     public int ID;
-    public string Name; // TODO : Move it into node
-    public PortTranslation Translation; // Keep it?
+    public PortTranslation Translation; // Keep it? 
     public int Group;
 
     public int ConnectedPortID;

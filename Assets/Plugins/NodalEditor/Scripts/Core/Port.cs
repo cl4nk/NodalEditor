@@ -9,6 +9,15 @@ public class Port : ScriptableObject, IDrawable, IResetable, IDeletable, IInitia
     public GUIStyle style;
 
     private PortData data;
+    
+    private string m_title; //TODO: Check if we need this
+    public string Title
+    {
+        get
+        {
+            return m_title;
+        }
+    }
 
     public virtual Color BackgroundColor
     {
@@ -64,7 +73,7 @@ public class Port : ScriptableObject, IDrawable, IResetable, IDeletable, IInitia
         {
             Port port = ScriptableObject.CreateInstance(PortType) as Port;
             //TODO: link node
-            port.data.Name = m_name;
+            port.m_title = m_name;
             port.data.Translation = m_translation;
             port.data.Group = m_group;
             return port;
