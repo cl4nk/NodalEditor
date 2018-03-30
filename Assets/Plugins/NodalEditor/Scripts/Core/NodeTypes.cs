@@ -24,22 +24,17 @@ public static class NodeTypes
 			if(attr == null || !attr.hide)
 			{ // Only regard if it is not marked as hidden
 				// Fetch node information
-				string ID, Title = "None";
-				FieldInfo IDField = type.GetField("ID");
-				if (IDField == null || attr == null)
-				{ // Cannot read ID from const field or need to read Title because of missing attribute -> Create sample to read from properties
-					Node sample = (Node)ScriptableObject.CreateInstance(type);
-					ID = sample.GetID;
-					Title = sample.Title;
-					UnityEngine.Object.DestroyImmediate(sample);
-				}
-				else // Can read ID directly from const field
-					ID = (string)IDField.GetValue(null);
+			    string className = type.FullName;
+			    string Title = "None";
+				Node sample = (Node)ScriptableObject.CreateInstance(type);
+				Title = sample.Title;
+                UnityEngine.Object.DestroyImmediate(sample);
+
 				// Create Data from information
 				NodeTypeData data = attr == null?  // Switch between explicit information by the attribute or node information
-					new NodeTypeData(ID, Title, type, new Type[0]) :
-					new NodeTypeData(ID, attr.contextText, type, attr.limitToCanvasTypes);
-				nodes.Add (ID, data);
+					new NodeTypeData(className, Title, type, new Type[0]) :
+					new NodeTypeData(className, attr.contextText, type, attr.limitToCanvasTypes);
+				nodes.Add (className, data);
 			}
 		}
 	}
@@ -73,8 +68,8 @@ public static class NodeTypes
 		List<string> compatibleNodes = new List<string> ();
 		foreach (NodeTypeData nodeData in NodeTypes.nodes.Values)
 		{ // Iterate over all nodes to check compability of any of their connection ports
-			if (ConnectionPortManager.GetPortDeclarations (nodeData.typeID).Any (
-				(ConnectionPortDeclaration portDecl) => portDecl.portInfo.IsCompatibleWith (port)))
+			if (PortManager.GetPortDeclarations (nodeData.typeID).Any (
+				(PortDeclaration portDecl) => portDecl.portInfo.IsCompatibleWith (port)))
 				compatibleNodes.Add (nodeData.typeID);
 		}
 		return compatibleNodes;

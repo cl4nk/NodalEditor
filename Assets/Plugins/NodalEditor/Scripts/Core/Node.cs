@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 using Interfaces;
@@ -10,23 +11,31 @@ public class Node : ScriptableObject, IDrawable
     private GUIStyle m_style = new GUIStyle();
     private NodeData m_data = new NodeData();
 
-    //TODO Add static id for creation
-    //TODO Create with Type or class name
+    private static int GlobalID = 0;
 
-    public static Node Create(Vector2 position, int id)
+    public static Node Create(Type type, Vector2 position, Graph ownerGraph)
     {
-        Node node = ScriptableObject.CreateInstance<Node>();
-        node.m_data.ID = id;
-        node.m_data.Position = position;
-        node.m_data.PortDatas = new List<PortData>();
-        node.m_data.Name = "No Title";
-        node.m_data.ModulableInGroupPorts = new List<int>();
-        node.m_data.ModulableOutGroupPorts = new List<int>();
+        Node node = ScriptableObject.CreateInstance(type) as Node;
+        node.m_data.ClassName = type.FullName;
+        node.Init(position, ownerGraph);
         return node;
     }
 
-    public Node(Vector2 position)
+    public static Node Create(string ClassName, Vector2 position, Graph ownerGraph)
     {
+        NodeTypeData data = NodeTypes.getNodeData(ClassName);
+        return Create(data.type, position, ownerGraph);
+    }
+
+    public void Init(Vector2 position, Graph ownerGraph)
+    {
+        m_data.ID = GlobalID++;
+        m_data.Position = position;
+        m_data.PortDatas = new List<PortData>();
+        m_data.Name = "No Title";
+        m_data.ModulableInGroupPorts = new List<int>();
+        m_data.ModulableOutGroupPorts = new List<int>();
+
         m_rect = new Rect(position.x, position.y, 100, 100);
         m_style.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1.png") as Texture2D;
         m_style.border = new RectOffset(12, 12, 12, 12);
@@ -81,4 +90,6 @@ public class Node : ScriptableObject, IDrawable
 
         return false;
     }
+
+    
 }

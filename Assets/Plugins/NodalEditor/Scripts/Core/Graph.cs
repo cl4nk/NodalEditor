@@ -52,7 +52,7 @@ public class Graph : IDrawable, ISaveable, IRestorable, IInitializable
             m_nodes = new List<Node>();
         }
 
-        m_nodes.Add(Node.Create(mousePosition, m_nodes.Count));
+        m_nodes.Add(Node.Create(typeof(Node), mousePosition, this));
     }
 
     public bool Restore(ScriptableObject scriptable)

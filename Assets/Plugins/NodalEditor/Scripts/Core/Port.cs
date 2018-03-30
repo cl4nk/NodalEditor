@@ -2,7 +2,7 @@
 using Interfaces;
 using UnityEngine;
 
-public class Port : ScriptableObject, IDrawable, IRestorable, IResetable, IDeletable, IInitializable
+public class Port : ScriptableObject, IDrawable, IResetable, IDeletable, IInitializable
 {
     public static Rect PortRect = new Rect(0, 0, 100, 100);
 
@@ -21,16 +21,6 @@ public class Port : ScriptableObject, IDrawable, IRestorable, IResetable, IDelet
     public void Draw()
     {
         GUI.Button(PortRect, "", style);
-    }
-
-    public bool Restore(ScriptableObject scriptable)
-    {
-        if (scriptable is PortData)
-        {
-            data = scriptable as PortData;
-        }
-
-        return false;
     }
 
     public void Reset()
@@ -72,8 +62,7 @@ public class Port : ScriptableObject, IDrawable, IRestorable, IResetable, IDelet
 
         public virtual Port CreateNew(Node body)
         {
-            Port port = new Port();
-            port.Create();
+            Port port = ScriptableObject.CreateInstance(PortType) as Port;
             //TODO: link node
             port.data.Name = m_name;
             port.data.Translation = m_translation;
