@@ -7,8 +7,9 @@ public enum PortTranslation
 }
 
 [Serializable]
-public class PortData : ScriptableObject
+public class PortData
 {
+    //TODO: Add class name
     public int ID;
     public string Name; 
     public int NodeID;

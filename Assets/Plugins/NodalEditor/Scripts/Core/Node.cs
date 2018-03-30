@@ -3,17 +3,19 @@ using UnityEditor;
 using System.Collections.Generic;
 using Interfaces;
 
-public class Node : IDrawable
+public class Node : ScriptableObject, IDrawable
 {
     private Rect m_rect = new Rect();
     private bool m_isDragged = false;
     private GUIStyle m_style = new GUIStyle();
     private NodeData m_data = new NodeData();
 
+    //TODO Add static id for creation
+    //TODO Create with Type or class name
+
     public static Node Create(Vector2 position, int id)
     {
-        Node node = new Node(position);
-        node.m_data = ScriptableObject.CreateInstance<NodeData>();
+        Node node = ScriptableObject.CreateInstance<Node>();
         node.m_data.ID = id;
         node.m_data.Position = position;
         node.m_data.PortDatas = new List<PortData>();

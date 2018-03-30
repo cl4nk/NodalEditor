@@ -2,7 +2,7 @@
 using Interfaces;
 using UnityEngine;
 
-public class Port : IDrawable, IRestorable, IResetable, ICreatable<Port>, IDeletable, IInitializable
+public class Port : ScriptableObject, IDrawable, IRestorable, IResetable, IDeletable, IInitializable
 {
     public static Rect PortRect = new Rect(0, 0, 100, 100);
 
@@ -36,13 +36,6 @@ public class Port : IDrawable, IRestorable, IResetable, ICreatable<Port>, IDelet
     public void Reset()
     {
         data.ConnectedPortID = -1;
-    }
-
-    public virtual Port Create()
-    {
-        Port port = new Port();
-        port.data = ScriptableObject.CreateInstance<PortData>();
-        return port;
     }
 
     public bool Delete()

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class NodeData : ScriptableObject
+public class NodeData
 {
+    //TODO: Add class name
+
     public int ID;
     public string Name;
     public Vector2 Position;
