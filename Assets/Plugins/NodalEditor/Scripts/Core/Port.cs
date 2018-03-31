@@ -101,6 +101,19 @@ public class Port : ScriptableObject, IDrawable, IResetable, IRestorable<PortDat
         {
             return Port.Create(PortType);
         }
+
+        public bool MatchFieldType(Type type)
+        {
+            //TODO: Make this function
+
+            return false;
+        }
+
+
+        public void UpdateProperties(Port port)
+        {
+            //TODO: Make this function
+        }
     }
 
 }

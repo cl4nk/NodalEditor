@@ -26,8 +26,8 @@ public static class PortManager
 				if (declAttrs.Length < 1)
 				    continue;
 				Port.PortAttribute declarationAttr = (Port.PortAttribute) declAttrs[0];
-				if (declarationAttr.MatchFieldType(portField.FieldType))
-				    declarations.Add(new PortDeclaration(portField, declarationAttr));
+				if (declarationAttr.MatchFieldType(portField.FieldType)) 
+                    declarations.Add(new PortDeclaration(portField, declarationAttr));
 				else
 				    Debug.LogError("Mismatched " + declarationAttr.GetType().Name + " for " + portField.FieldType.Name + " '" + declarationAttr.Name + "' on " + nodeData.type.Name + "!");
             }
@@ -50,8 +50,8 @@ public static class PortManager
 			}
 			else 
 			{ // Check port values against port declaration
-				portDecl.portInfo.UpdateProperties (port);
-			}
+				portDecl.portInfo.UpdateProperties (port); //TODO: Fix it
+            }
 		}
 	}
 

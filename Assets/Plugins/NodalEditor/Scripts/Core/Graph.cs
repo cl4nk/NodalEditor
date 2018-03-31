@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Graph : ScriptableObject, IDrawable, ISaveable, IInitializable, IRestorable<GraphData>
 {
-    private List<Node> m_nodes = new List<Node>();
+    private List<Node> m_nodes;
 
     public GraphData Data { get; private set; }
 
