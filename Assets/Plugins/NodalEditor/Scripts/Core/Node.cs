@@ -11,7 +11,10 @@ public class Node : ScriptableObject, IDrawable, INameable, IColorable, IRestora
 
     private Rect m_rect = new Rect();
     private bool m_isDragged = false;
+    private bool m_isSelected = false;
+    private GUIStyle m_currentStyle = null;
     private GUIStyle m_style = new GUIStyle();
+    private GUIStyle m_selectedStyle = new GUIStyle();
 
     public NodeData Data { get; private set; }
 
@@ -82,6 +85,10 @@ public class Node : ScriptableObject, IDrawable, INameable, IColorable, IRestora
         m_rect = new Rect(position.x, position.y, 100, 100);
         m_style.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1.png") as Texture2D;
         m_style.border = new RectOffset(12, 12, 12, 12);
+        m_selectedStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1 on.png") as Texture2D;
+        m_selectedStyle.border = new RectOffset(12, 12, 12, 12);
+
+        m_currentStyle = m_style;
     }
 
     public void Drag(Vector2 delta)
@@ -91,7 +98,7 @@ public class Node : ScriptableObject, IDrawable, INameable, IColorable, IRestora
 
     public void Draw() 
     {
-        GUI.Box(m_rect, "", m_style);
+        GUI.Box(m_rect, "", m_currentStyle);
         GUI.BeginGroup(m_rect);
         GUILayout.Label(Title);
         GUI.EndGroup();
@@ -107,10 +114,14 @@ public class Node : ScriptableObject, IDrawable, INameable, IColorable, IRestora
                     if (m_rect.Contains(e.mousePosition))
                     {
                         m_isDragged = true;
+                        m_isSelected = true;
+                        m_currentStyle = m_selectedStyle;
                         GUI.changed = true;
                     }
                     else
                     {
+                        m_isSelected = false;
+                        m_currentStyle = m_style;
                         GUI.changed = true;
                     }
                 }
