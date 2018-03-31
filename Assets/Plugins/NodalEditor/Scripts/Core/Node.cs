@@ -9,6 +9,7 @@ public class Node : ScriptableObject, IDrawable, INameable, IColorable, IRestora
 {
     private static int GlobalID = 0;
 
+    private Graph m_ownerGraph = null;
     private Rect m_rect = new Rect();
     private bool m_isDragged = false;
     private bool m_isSelected = false;
@@ -82,6 +83,7 @@ public class Node : ScriptableObject, IDrawable, INameable, IColorable, IRestora
         Data.ID = GlobalID++;
         Data.Position = position;
 
+        m_ownerGraph = ownerGraph;
         m_rect = new Rect(position.x, position.y, 100, 100);
         m_style.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1.png") as Texture2D;
         m_style.border = new RectOffset(12, 12, 12, 12);
@@ -125,6 +127,11 @@ public class Node : ScriptableObject, IDrawable, INameable, IColorable, IRestora
                         GUI.changed = true;
                     }
                 }
+                else if (e.button == 1 && m_isSelected && m_rect.Contains(e.mousePosition))
+                {
+                    ProcessContextMenu();
+                    e.Use();
+                }
                 break;
 
             case EventType.MouseUp:
@@ -144,5 +151,15 @@ public class Node : ScriptableObject, IDrawable, INameable, IColorable, IRestora
         return false;
     }
 
-    
+    private void ProcessContextMenu()
+    {
+        GenericMenu genericMenu = new GenericMenu();
+        genericMenu.AddItem(new GUIContent("Remove node"), false, OnClickRemoveNode);
+        genericMenu.ShowAsContext();
+    }
+
+    private void OnClickRemoveNode()
+    {
+        m_ownerGraph.DeleteNode(this);
+    }
 }

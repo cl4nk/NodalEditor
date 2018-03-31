@@ -77,6 +77,11 @@ public class Graph : ScriptableObject, IDrawable, ISaveable, IInitializable, IRe
         m_nodes.Add(createdNode);
     }
 
+    public void DeleteNode(Node node)
+    {
+        m_nodes.Remove(node);
+    }
+
     public bool Save(string path)
     {
         throw new System.NotImplementedException();
