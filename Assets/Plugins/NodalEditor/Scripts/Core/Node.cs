@@ -17,6 +17,8 @@ public class Node : ScriptableObject, IDrawable, INameable, IColorable, IRestora
     private GUIStyle m_style = new GUIStyle();
     private GUIStyle m_selectedStyle = new GUIStyle();
 
+    private List<Port> m_ports = new List<Port>();
+
     public NodeData Data { get; private set; }
 
     //TODO: remove it when the class is finished and abstract
@@ -100,10 +102,7 @@ public class Node : ScriptableObject, IDrawable, INameable, IColorable, IRestora
 
     public void Draw() 
     {
-        GUI.Box(m_rect, "", m_currentStyle);
-        GUI.BeginGroup(m_rect);
-        GUILayout.Label(Title);
-        GUI.EndGroup();
+        GUI.Box(m_rect, Title, m_currentStyle);
     }
 
     public bool ProcessEvents(Event e)
@@ -154,7 +153,7 @@ public class Node : ScriptableObject, IDrawable, INameable, IColorable, IRestora
     private void ProcessContextMenu()
     {
         GenericMenu genericMenu = new GenericMenu();
-        genericMenu.AddItem(new GUIContent("Remove node"), false, OnClickRemoveNode);
+        genericMenu.AddItem(new GUIContent("Remove"), false, OnClickRemoveNode);
         genericMenu.ShowAsContext();
     }
 
