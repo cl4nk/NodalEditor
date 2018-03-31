@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Graph : ScriptableObject, IDrawable, ISaveable, IInitializable, IRestorable<GraphData>
 {
-    private List<Node> m_nodes;
+    private List<Node> m_nodes = new List<Node>();
 
     public GraphData Data { get; private set; }
 
@@ -72,11 +72,6 @@ public class Graph : ScriptableObject, IDrawable, ISaveable, IInitializable, IRe
 
     public void AddNode(Vector2 mousePosition)
     {
-        if (m_nodes == null)
-        {
-            m_nodes = new List<Node>();
-        }
-
         Node createdNode = Node.Create(typeof(Node));
         createdNode.Init(mousePosition, this);
         m_nodes.Add(createdNode);
