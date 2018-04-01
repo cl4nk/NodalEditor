@@ -4,34 +4,34 @@ using System.Collections.Generic;
 
 public class NodeBasedWindow : EditorWindow
 {
-       private GUIStyle m_nodeStyle;
-       private Graph m_graph;
+    private GUIStyle m_nodeStyle;
+    private Graph m_graph;
 
-       [MenuItem("Window/Window Editor")]
-       private static void OpenWindow()
-       {
-           NodeBasedWindow window = GetWindow<NodeBasedWindow>();
-           window.titleContent = new GUIContent("Window Editor");
-           window.m_graph = Graph.Create(typeof(Graph));
-       }
+    [MenuItem("Window/Window Editor")]
+    private static void OpenWindow()
+    {
+        NodeBasedWindow window = GetWindow<NodeBasedWindow>();
+        window.titleContent = new GUIContent("Window Editor");
+        window.m_graph = Graph.Create(typeof(Graph));
+    }
 
-       private void OnGUI()
-       {
-           if (m_graph != null)
-           {
-               m_graph.Draw();
-               m_graph.Process();
-           }
+    private void OnGUI()
+    {
+        if (m_graph != null)
+        {
+            m_graph.Draw();
+            m_graph.Process();
+        }
 
-           ProcessEvents(Event.current);
+        ProcessEvents(Event.current);
 
-           if (GUI.changed)
-           {
-               Repaint();
-           }
-       }
+        if (GUI.changed)
+        {
+            Repaint();
+        }
+    }
 
-       private void ProcessEvents(Event e)
+    private void ProcessEvents(Event e)
        {
            switch ( e.type )
            {

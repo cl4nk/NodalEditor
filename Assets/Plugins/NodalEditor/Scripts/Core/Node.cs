@@ -21,6 +21,8 @@ public class Node : ScriptableObject, IDrawable, INameable, IColorable, IRestora
 
     public NodeData Data { get; private set; }
 
+    private GUIStyle m_titleStyle = new GUIStyle();
+
     //TODO: remove it when the class is finished and abstract
     public virtual string Title
     {
@@ -91,7 +93,7 @@ public class Node : ScriptableObject, IDrawable, INameable, IColorable, IRestora
         m_style.border = new RectOffset(12, 12, 12, 12);
         m_selectedStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1 on.png") as Texture2D;
         m_selectedStyle.border = new RectOffset(12, 12, 12, 12);
-
+        m_titleStyle.alignment = TextAnchor.MiddleCenter;
         m_currentStyle = m_style;
     }
 
@@ -102,7 +104,10 @@ public class Node : ScriptableObject, IDrawable, INameable, IColorable, IRestora
 
     public void Draw() 
     {
-        GUI.Box(m_rect, Title, m_currentStyle);
+        GUI.Box(m_rect, "", m_currentStyle);
+        GUILayout.BeginArea(m_rect);
+        GUILayout.Label(Title, m_titleStyle);
+        GUILayout.EndArea();
     }
 
     public bool ProcessEvents(Event e)
