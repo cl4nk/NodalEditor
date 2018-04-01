@@ -10,7 +10,10 @@ public class Node : ScriptableObject, IDrawable, INameable, IColorable, IRestora
     private static int GlobalID = 0;
 
     private Graph m_ownerGraph = null;
+
     private Rect m_rect = new Rect();
+    private float m_offset = 20;
+
     private bool m_isDragged = false;
     private bool m_isSelected = false;
     private GUIStyle m_currentStyle = null;
@@ -23,12 +26,15 @@ public class Node : ScriptableObject, IDrawable, INameable, IColorable, IRestora
 
     private GUIStyle m_titleStyle = new GUIStyle();
 
+    // TODO: To test
+    private string test = "";
+
     //TODO: remove it when the class is finished and abstract
     public virtual string Title
     {
         get
         {
-            return "Node";
+            return "Calculate Node";
         }
     }
 
@@ -88,7 +94,7 @@ public class Node : ScriptableObject, IDrawable, INameable, IColorable, IRestora
         Data.Position = position;
 
         m_ownerGraph = ownerGraph;
-        m_rect = new Rect(position.x, position.y, 100, 100);
+        m_rect = new Rect(position.x, position.y, 300, 4 * m_offset);
         m_style.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1.png") as Texture2D;
         m_style.border = new RectOffset(12, 12, 12, 12);
         m_selectedStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1 on.png") as Texture2D;
@@ -105,8 +111,29 @@ public class Node : ScriptableObject, IDrawable, INameable, IColorable, IRestora
     public void Draw() 
     {
         GUI.Box(m_rect, "", m_currentStyle);
-        GUILayout.BeginArea(m_rect);
+
+        // Area for the Node's title
+        Rect titleRect = new Rect(m_rect.position.x + 25, m_rect.position.y + 10, 250, m_offset);
+        GUILayout.BeginArea(titleRect);
         GUILayout.Label(Title, m_titleStyle);
+        GUILayout.EndArea();
+
+        // Area for the inspector
+        Rect inspecRect = new Rect(m_rect.position.x + 25, titleRect.position.y + m_offset, 250, m_offset);
+        GUILayout.BeginArea(inspecRect);
+        test = GUILayout.TextArea(test, 100);
+        GUILayout.EndArea();
+        
+        //Area For the pins' in
+        Rect leftRect = new Rect(m_rect.position.x + 25, inspecRect.position.y + m_offset, 125, m_offset);
+        GUILayout.BeginArea(leftRect);
+        GUILayout.HorizontalSlider(0, 0, 100);
+        GUILayout.EndArea();
+
+        //Area For the pins' out
+        Rect rightRect = new Rect(m_rect.position.x + 175, inspecRect.position.y + m_offset, 125, m_offset);
+        GUILayout.BeginArea(rightRect);
+        GUILayout.Label("Out");
         GUILayout.EndArea();
     }
 
